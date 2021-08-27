@@ -3,19 +3,26 @@ import { useReducer } from 'react'
 import './App.css';
 
 const reducer = (state, action) => {
-  return { count: state.count + 1 }
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
 }
 
 function App() {
   const [state, dispatch] = useReducer(reducer, { count: 0 })
 
   const increment = () => {
-    dispatch()
+    dispatch({ type: 'increment' })
   }
 
-  // const decrement = () => {
-  //   setCount(prevCount => prevCount - 1)
-  // }
+  const decrement = () => {
+    dispatch({ type: 'decrement' })
+  }
 
   return (
     <div className="App">
@@ -23,7 +30,7 @@ function App() {
         <h3>useReducer</h3>
         <div>{state.count}</div>
         <div style={{ margin: "20px", width: "30vw" }}>
-          {/* <button style={{ width: "5vw"}} onClick={decrement}>-</button> */}
+          <button style={{ width: "5vw"}} onClick={decrement}>-</button>
           <button style={{ width: "5vw"}} onClick={increment}>+</button>
         </div>
       </header>
