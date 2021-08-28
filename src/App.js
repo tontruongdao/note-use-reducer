@@ -4,7 +4,8 @@ import './App.css';
 
 const ACTIONS = {
   INCREMENT: 'increment',
-  DECREMENT: 'decrement'
+  DECREMENT: 'decrement',
+  RESET: "reset"
 }
 
 const reducer = (state, action) => {
@@ -13,6 +14,8 @@ const reducer = (state, action) => {
       return { count: state.count + 1 };
     case ACTIONS.DECREMENT:
       return { count: state.count - 1 };
+    case ACTIONS.RESET:
+      return { count: 0 }
     default:
       return state;
   }
@@ -29,6 +32,10 @@ function App() {
     dispatch({ type: ACTIONS.DECREMENT })
   }
 
+  const reset = () => {
+    dispatch({ type: ACTIONS.RESET })
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -37,6 +44,7 @@ function App() {
         <div style={{ margin: "20px", width: "30vw" }}>
           <button style={{ width: "5vw"}} onClick={decrement}>-</button>
           <button style={{ width: "5vw"}} onClick={increment}>+</button>
+          <button style={{ width: "5vw"}} onClick={reset}>reset</button>
         </div>
       </header>
     </div>
