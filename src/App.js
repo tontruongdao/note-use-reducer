@@ -4,7 +4,8 @@ import './App.css';
 
 const ACTIONS = {
   ADD_TODO: 'add_todo',
-  TOGGLE_TODO: 'toggle_todo'
+  TOGGLE_TODO: 'toggle_todo',
+  DELETE_TODO: 'delete_todo'
 }
 
 const reducer = (todos, action) => {
@@ -17,7 +18,11 @@ const reducer = (todos, action) => {
           return { ...todo, complete: !todo.complete }
         }
         return todo
-      })
+      });
+    case ACTIONS.DELETE_TODO:
+      return todos.filter(todo => todo.id !== action.payload.id)
+    default: 
+      return todos
   }
 }
 
@@ -36,7 +41,9 @@ const Todo = ({ todo, dispatch }) => {
       >
         toggle
       </button>
-      <button>
+      <button
+        onClick={() => dispatch({ type: ACTIONS.DELETE_TODO, payload: { id: todo.id }})}
+      >
         delete
       </button>
     </div>
