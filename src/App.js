@@ -12,7 +12,12 @@ const reducer = (todos, action) => {
     case ACTIONS.ADD_TODO:
       return [...todos, newTodo(action.payload.name)]
     case ACTIONS.TOGGLE_TODO:
-      
+      return todos.map(todo => {
+        if(todo.id === action.payload.id) {
+          return { ...todo, complete: !todo.complete }
+        }
+        return todo
+      })
   }
 }
 
@@ -20,13 +25,15 @@ const newTodo = (name) => {
   return { id: Date.now(), name, complete: false }
 }
 
-const Todo = ({ todo }) => {
+const Todo = ({ todo, dispatch }) => {
   return (
     <div>
       <div style={{ color: todo.complete ? 'salmon' : 'lightgrey' }}>
         {todo.name}
       </div>
-      <button>
+      <button
+        onClick={() => dispatch({ type: ACTIONS.TOGGLE_TODO, payload: { id: todo.id }})}
+      >
         toggle
       </button>
       <button>
@@ -54,7 +61,7 @@ function App() {
           <input type="text" value={name} onChange={e => setName(e.target.value)} />
         </form>
         {todos.map((todo) => (
-          <Todo key={todo.id} todo={todo} />
+          <Todo key={todo.id} todo={todo} dispatch={dispatch}/>
         ))}
       </header>
     </div>
