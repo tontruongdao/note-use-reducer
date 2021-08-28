@@ -3,18 +3,37 @@ import { useState, useReducer } from 'react'
 import './App.css';
 
 const ACTIONS = {
-  ADD_TODO: 'add_todo'
+  ADD_TODO: 'add_todo',
+  TOGGLE_TODO: 'toggle_todo'
 }
 
 const reducer = (todos, action) => {
   switch (action.type) {
     case ACTIONS.ADD_TODO:
       return [...todos, newTodo(action.payload.name)]
+    case ACTIONS.TOGGLE_TODO:
+      
   }
 }
 
 const newTodo = (name) => {
   return { id: Date.now(), name, complete: false }
+}
+
+const Todo = ({ todo }) => {
+  return (
+    <div>
+      <div style={{ color: todo.complete ? 'salmon' : 'lightgrey' }}>
+        {todo.name}
+      </div>
+      <button>
+        toggle
+      </button>
+      <button>
+        delete
+      </button>
+    </div>
+  )
 }
 
 function App() {
@@ -27,7 +46,6 @@ function App() {
     setName('')
   }
 
-  console.log(todos)
   return (
     <div className="App">
       <header className="App-header">
@@ -35,6 +53,9 @@ function App() {
         <form onSubmit={handleSubmit}>
           <input type="text" value={name} onChange={e => setName(e.target.value)} />
         </form>
+        {todos.map((todo) => (
+          <Todo key={todo.id} todo={todo} />
+        ))}
       </header>
     </div>
   );
