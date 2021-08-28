@@ -1,51 +1,40 @@
-import { useReducer } from 'react'
+import { useState, useReducer } from 'react'
 
 import './App.css';
 
 const ACTIONS = {
-  INCREMENT: 'increment',
-  DECREMENT: 'decrement',
-  RESET: "reset"
+  ADD_TODO: 'add_todo'
 }
 
-const reducer = (state, action) => {
+const reducer = (todos, action) => {
   switch (action.type) {
-    case ACTIONS.INCREMENT:
-      return { count: state.count + 1 };
-    case ACTIONS.DECREMENT:
-      return { count: state.count - 1 };
-    case ACTIONS.RESET:
-      return { count: 0 }
-    default:
-      return state;
+    case ACTIONS.ADD_TODO:
+      return [...todos, newTodo(action.payload.name)]
   }
+}
+
+const newTodo = (name) => {
+  return { id: Date.now(), name, complete: false }
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, { count: 0 })
+  const [name, setName] = useState('')
+  const [todos, dispatch] = useReducer(reducer, [])
 
-  const increment = () => {
-    dispatch({ type: ACTIONS.INCREMENT })
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    dispatch({ type: ACTIONS.ADD_TODO, payload: { name } })
+    setName('')
   }
 
-  const decrement = () => {
-    dispatch({ type: ACTIONS.DECREMENT })
-  }
-
-  const reset = () => {
-    dispatch({ type: ACTIONS.RESET })
-  }
-
+  console.log(todos)
   return (
     <div className="App">
       <header className="App-header">
         <h3>useReducer</h3>
-        <div>{state.count}</div>
-        <div style={{ margin: "20px", width: "30vw" }}>
-          <button style={{ width: "5vw"}} onClick={decrement}>-</button>
-          <button style={{ width: "5vw"}} onClick={increment}>+</button>
-          <button style={{ width: "5vw"}} onClick={reset}>reset</button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <input type="text" value={name} onChange={e => setName(e.target.value)} />
+        </form>
       </header>
     </div>
   );
